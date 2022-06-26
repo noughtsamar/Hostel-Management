@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -13,7 +12,7 @@ void view_list();
 void erase();
 void see();
 void closer();
-
+void query();
 
 struct date{
     int month,day,year;
@@ -31,7 +30,8 @@ struct {
     char hostel_name[6];
     char hostel_id[10];
     struct date dob;
-    }add,upd,check,rem,sort;
+    char query[9999999];
+    }add,upd,check,rem,sort,quer;
 
 
 int main()
@@ -50,7 +50,7 @@ system("CLS");
     int choice;
     printf("\n\n\t\t\tHOSTEL MANAGEMENT SYSTEM");
     printf("\n\n\n\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2 WELCOME TO THE MAIN MENU \xB2\xB2\xB2\xB2\xB2\xB2\xB2");
-    printf("\n\n\t\t1>> Enter new Student's data\n\t\t2>> Update information of existing account\n\t\t3>> Check the details of existing account\n\t\t4>> Removing existing account\n\t\t5>> View all students list\n\t\t6>> Exit\n\n\n\n\n\t\t Enter your choice:");
+    printf("\n\n\t\t1>> Enter new Student's data\n\t\t2>> Update information of existing account\n\t\t3>> Check the details of existing account\n\t\t4>> Removing existing account\n\t\t5>> View all students list\n\t\t6>> Grievances and queries\n\t\t7>> Exit\n\n\n\n\n\t\t Enter your choice:");
     scanf("%d",&choice);
 
     switch(choice)
@@ -66,7 +66,9 @@ system("CLS");
         break;
         case 5:view_list();
         break;
-        case 6:closer();
+        case 7:closer();
+        break;
+        case 6:query();
         break;
         default:menu();
     }
@@ -125,7 +127,7 @@ void new_entry()
     }
     else if(strcmp(add.hostel_name,"BH-2")==0)
     {
-        hostel=fopen("BH-2.dat","[11]");
+        hostel=fopen("BH-2.dat","a[11]");
         fprintf(hostel, "%s\n", add.hostel_id);
         fclose(hostel);
     }
@@ -137,7 +139,7 @@ void new_entry()
     }
     else if(strcmp(add.hostel_name,"GH-1")==0)
     {
-        hostel=fopen("GH-1.dat","[11]");
+        hostel=fopen("GH-1.dat","a[11]");
         fprintf(hostel, "%s\n",add.hostel_id);
         fclose(hostel);
     }
@@ -161,7 +163,7 @@ void new_entry()
         }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 void view_list()
 {
     system("CLS");
@@ -196,6 +198,64 @@ void view_list()
             goto view_list_invalid;
         }
 }
+
+void query()
+{
+    system("CLS");
+    int choice,test=0;
+    FILE *old,*newrec;
+    old=fopen("record.dat","r");
+    newrec=fopen("new.dat","w");
+
+    printf("\nEnter your hostel ID:");
+    scanf("%s",upd.hostel_id);
+    while(fscanf(old,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, &add.dob.month, &add.dob.day, &add.dob.year, &add.age, add.city, &add.phone_no, add.mail_id, add.father_name, &add.father_phone_no, add.room_no, add.hostel_name)!=EOF)
+
+    {
+        if (strcmp(add.hostel_id,upd.hostel_id)==0)
+        {   test=1;
+            printf("\nEnter your query: ");
+                scanf(" %[^\n]", upd.query);
+                fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name,upd.query);
+                printf("Query registered.\n");
+                printf("The query registered for student %s is: %s", add.name,upd.query);
+
+            break;
+        }
+
+
+        else
+            fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
+    }
+    fclose(old);
+    fclose(newrec);
+    remove("record.dat");
+    rename("new.dat","record.dat");
+
+    if(test!=1)
+        printf("\nRecord not found!!\a\a\a");
+
+    edit_invalid:
+        printf("\nEnter 0 to try again,1 to return to main menu and 2 to exit:");
+        scanf("%d",&main_exit);
+        if (main_exit==1)
+            menu();
+        else if (main_exit==2)
+            closer();
+        else if(main_exit==0)
+            query();
+        else
+        {
+            printf("\nInvalid!\a");
+            goto edit_invalid;
+        }
+
+
+
+
+
+}
+
 
 
 
@@ -263,14 +323,15 @@ void edit()
             scanf("%d",&choice);
 
             if(choice==1)
-                {printf("Enter the new room no.:");
+                {
+                printf("Enter the new room no.:");
                 scanf("%s",upd.room_no);
                 fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, upd.room_no, add.hostel_name);
                 printf("Changes saved!");
                 }
             else if(choice==2)
                 {
-                    printf("Enter the new phone number:");
+                printf("Enter the new phone number:");
                 scanf("%d",&upd.phone_no);
                 fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, upd.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
                 printf("Changes saved!");
@@ -353,3 +414,5 @@ void closer()
     system("CLS");
     printf("\n\n\n*THANK YOU*\n\n\n");
 }
+
+
