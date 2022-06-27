@@ -97,26 +97,71 @@ void new_entry()
     strcpy(add.hostel_id,check.hostel_id);
     printf("\nEnter the name:");
     scanf("%s",add.name);
-    printf("\nEnter the date of birth(mm/dd/yyyy):");
-    scanf("%d/%d/%d",&add.dob.month,&add.dob.day,&add.dob.year);
-    printf("\nEnter the age:");
-    scanf("%d",&add.age);
+    dob:
+        {
+            printf("\nEnter the date of birth(mm/dd/yyyy):");
+            scanf("%d/%d/%d",&add.dob.month,&add.dob.day,&add.dob.year);
+        }
+    if(add.dob.month>12 || add.dob.month<1 || (add.dob.month==2 && add.dob.day>29) || (add.dob.day>31) || ((add.dob.month== 4 || add.dob.month== 6 || add.dob.month== 9 || add.dob.month== 11)&&add.dob.day>30 ))    {
+        printf("\n Incorrect DOB, enter as mm/dd/yyyy");
+        goto dob;
+    }
+    age:
+        {
+             printf("\nEnter the age:");
+             scanf("%d",&add.age);
+        }
+    if(add.age<18 || add.age>25)
+    {
+        printf("\n Your age isn't compatible for the records!!\n");
+        goto age;
+
+    }
     printf("\nEnter the city:");
     scanf("%s",add.city);
-    printf("\nEnter the phone number:");
-    scanf("%s",&add.phone_no);
+    p_no:
+        {
+            printf("\nEnter the phone number:");
+            scanf("%s",&add.phone_no);
+        }
+
+    if (strlen(add.phone_no)!= 10)
+    {
+        printf("\nIncorrect mobile number entered");
+        goto p_no;
+    }
     printf("\n Enter your email id :");
     scanf("%s",add.mail_id);
     printf("\n Enter your Father's name:");
-    scanf("%s",add.father_name);
-    printf("\n Enter your Father's phone no.:");
-    scanf("%s",&add.father_phone_no);
+    scanf("%s",&add.father_name);
+    fp_no:
+        {
+            printf("\nEnter your Father's phone no.:");
+            scanf("%s",&add.father_phone_no);
+        }
+    if (strlen(add.phone_no)!= 10)
+    {
+        printf("\nIncorrect mobile number entered");
+        goto fp_no;
+    }
     printf("\n Enter your room no.:");
     scanf("%s",add.room_no);
-    printf("\n Enter your hostel name from BH-1, BH-2, BH-3, GH-1 :");
-    scanf("%s",add.hostel_name);
+    h_no:
+    {
+        printf("\n Enter your hostel name from BH-1, BH-2, BH-3, GH-1 :");
+        scanf("%s",add.hostel_name);
+    }
+    if (add.hostel_name == "BH-1" || add.hostel_name == "BH-2" || add.hostel_name == "BH-3" || add.hostel_name == "GH-1" )
+    {
 
-        fprintf(ptr,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
+    }
+    else
+    {
+       printf("\nIncorrect Hostel name\n");
+        goto h_no;
+    }
+
+    fprintf(ptr,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
 
         //adding student hostel id. to hostels' list
     if(strcmp(add.hostel_name,"BH-1")==0)
@@ -414,5 +459,3 @@ void closer()
     system("CLS");
     printf("\n\n\n*THANK YOU*\n\n\n");
 }
-
-
