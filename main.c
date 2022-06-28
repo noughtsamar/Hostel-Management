@@ -139,7 +139,7 @@ void new_entry()
             printf("\nEnter your Father's phone no.:");
             scanf("%s",&add.father_phone_no);
         }
-    if (strlen(add.phone_no)!= 10)
+    if (strlen(add.father_phone_no)!= 10)
     {
         printf("\nIncorrect mobile number entered");
         goto fp_no;
@@ -149,17 +149,15 @@ void new_entry()
     h_no:
     {
         printf("\n Enter your hostel name from BH-1, BH-2, BH-3, GH-1 :");
-        scanf("%s",add.hostel_name);
+        scanf(" %s",add.hostel_name);
     }
-    if (add.hostel_name == "BH-1" || add.hostel_name == "BH-2" || add.hostel_name == "BH-3" || add.hostel_name == "GH-1" )
-    {
+    //if (add.hostel_name != "BH-1" || add.hostel_name != "BH-2" || add.hostel_name != "BH-3" || add.hostel_name != "GH-1" )
+    //{
 
-    }
-    else
-    {
-       printf("\nIncorrect Hostel name\n");
-        goto h_no;
-    }
+//
+  //     printf("\nIncorrect Hostel name\n");
+  //      goto h_no;
+  //  }
 
     fprintf(ptr,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
 
@@ -246,14 +244,17 @@ void view_list()
 
 void query()
 {
+
     system("CLS");
     int choice,test=0;
-    FILE *old,*newrec;
+    FILE *old;
     old=fopen("record.dat","r");
-    newrec=fopen("new.dat","w");
+
 
     printf("\nEnter your hostel ID:");
     scanf("%s",upd.hostel_id);
+    FILE *a;
+    a = fopen("query.dat", "a");
     while(fscanf(old,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, &add.dob.month, &add.dob.day, &add.dob.year, &add.age, add.city, &add.phone_no, add.mail_id, add.father_name, &add.father_phone_no, add.room_no, add.hostel_name)!=EOF)
 
     {
@@ -261,7 +262,8 @@ void query()
         {   test=1;
             printf("\nEnter your query: ");
                 scanf(" %[^\n]", upd.query);
-                fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name,upd.query);
+                fprintf(a, "%s %s\n", add.hostel_id, upd.query);
+                //fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name,upd.query);
                 printf("Query registered.\n");
                 printf("The query registered for student %s is: %s", add.name,upd.query);
 
@@ -269,13 +271,11 @@ void query()
         }
 
 
-        else
-            fprintf(newrec,"%s %s %d/%d/%d %d %s %d %s %s %s %s %s\n",add.hostel_id, add.name, add.dob.month, add.dob.day, add.dob.year, add.age, add.city, add.phone_no, add.mail_id, add.father_name, add.father_phone_no, add.room_no, add.hostel_name);
+
     }
     fclose(old);
-    fclose(newrec);
-    remove("record.dat");
-    rename("new.dat","record.dat");
+
+
 
     if(test!=1)
         printf("\nRecord not found!!\a\a\a");
@@ -459,3 +459,4 @@ void closer()
     system("CLS");
     printf("\n\n\n*THANK YOU*\n\n\n");
 }
+
