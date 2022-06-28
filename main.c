@@ -96,7 +96,7 @@ void new_entry()
 
     strcpy(add.hostel_id,check.hostel_id);
     printf("\nEnter the name:");
-    scanf("%s",add.name);
+    scanf(" %[^\n]%*c",add.name);
     dob:
         {
             printf("\nEnter the date of birth(mm/dd/yyyy):");
@@ -133,7 +133,7 @@ void new_entry()
     printf("\n Enter your email id :");
     scanf("%s",add.mail_id);
     printf("\n Enter your Father's name:");
-    scanf("%s",&add.father_name);
+    scanf(" %[^\n]%*c",&add.father_name);
     fp_no:
         {
             printf("\nEnter your Father's phone no.:");
@@ -459,4 +459,3 @@ void closer()
     system("CLS");
     printf("\n\n\n*THANK YOU*\n\n\n");
 }
-
